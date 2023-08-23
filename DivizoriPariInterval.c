@@ -2,33 +2,46 @@
 
 int main()
 {
-    unsigned a, b, i, n, nrdp, d, maxnrdp = 0, nrmin = 999999999, nrmax = 1;
+    unsigned a, b, n, nrmin, nrmax;
+    unsigned short nrdp, d, maxnrdp = 0;
 
     scanf("%u %u", &a, &b);
-    
-    for (n = a; n <= b; n++) {
+
+    n = a;
+
+    do {
         nrdp = n % 2 == 0 ? 1 : 0;
 
-        for (d = 2; d <= n/2; d++) {
+        for (d = 2; d*d < n; d++)
             if (n % d == 0) {
-                if (d % 2 == 0) {
-                    nrdp++;
-                }
+                if (d % 2 == 0) nrdp++;
+                if (n/d % 2 == 0) nrdp++;
             }
-        }
 
-        if (maxnrdp < nrdp) {
+        if (d*d == n && d % 2 == 0) nrdp++;
+
+        if (nrdp > maxnrdp) {
             maxnrdp = nrdp;
             nrmin = n;
             nrmax = n;
-        } else if (maxnrdp == nrdp) {
+        } else if (nrdp == maxnrdp) {
             if (n < nrmin) nrmin = n;
             if (n > nrmax) nrmax = n;
         }
+
+    //  printf("n = %u, nrdp = %hu, maxnrdp = %hu, nrmin = %u, nrmax = %u\n", n, nrdp, maxnrdp, nrmin, nrmax);
+
+        n = n % 2 == 0 ? n + 2 : n + 1;
+
+    } while (n <= b);
+
+    if (maxnrdp == 0) {
+        nrmin = a;
+        nrmax = b;
     }
 
-    printf("%u %u %u", maxnrdp, nrmin, nrmax);
+    printf("%hu %u %u", maxnrdp, nrmin, nrmax);
 
     return 0;
 }
-// scor 80/100
+// scor 100/100
